@@ -24,19 +24,41 @@
         }
     </script>
     <style>
+        :root {
+            --glitch-base: #000000;
+            --glitch-glow: rgba(0, 0, 0, 0.2);
+            --glitch-high: rgba(0, 0, 0, 0.5);
+        }
+        
+        html.dark {
+            --glitch-base: #ffffff;
+            --glitch-glow: rgba(255, 255, 255, 0.2);
+            --glitch-high: rgba(255, 255, 255, 0.5);
+        }
+
         body {
-            background-color: #000000;
-            color: #e5e5e5;
+            background-color: #ffffff;
+            color: #111111;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        
+        html.dark body {
+            background-color: #000000;
+            color: #e5e5e5;
         }
         
         /* Mastered arcane transitions - Sleek and Clean */
         .grimoire-card {
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            background: #000000;
+            background: #ffffff;
         }
         
+        html.dark .grimoire-card {
+            background: #000000;
+        }
+
         .grimoire-card:hover {
             transform: translateY(-2px);
         }
@@ -48,7 +70,7 @@
 
         /* Active Lightning Glitch Charge */
         .lightning-charge {
-            color: #ffffff;
+            color: var(--glitch-base);
             display: inline-block;
             position: relative;
             animation: storm-flicker 5s infinite;
@@ -56,14 +78,14 @@
 
         @keyframes storm-flicker {
             0%, 9%, 11%, 19%, 21%, 54%, 56%, 100% {
-                text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+                text-shadow: 0 0 5px var(--glitch-glow);
                 transform: translate(0, 0) skewX(0);
             }
             10% {
                 text-shadow: 
                     -1px 0 0 rgba(220, 38, 38, 0.6), 
                     1px 0 0 rgba(6, 182, 212, 0.6),
-                    0 0 5px rgba(255, 255, 255, 0.5);
+                    0 0 5px var(--glitch-high);
                 transform: translate(-0.5px, 0.5px) skewX(-5deg);
             }
             20% {
@@ -75,7 +97,7 @@
             }
             55% {
                 text-shadow: 
-                    0 0 8px rgba(255, 255, 255, 0.6),
+                    0 0 8px var(--glitch-high),
                     0 0 15px rgba(6, 182, 212, 0.4);
                 transform: scale(1.005);
             }
@@ -89,19 +111,19 @@
         @keyframes single-shock {
             0% { transform: translate(0, 0) skewX(0); color: inherit; }
             10% { 
-                text-shadow: -1px 0 0 rgba(220, 38, 38, 0.8), 1px 0 0 rgba(6, 182, 212, 0.8), 0 0 5px rgba(255, 255, 255, 0.8); 
+                text-shadow: -1px 0 0 rgba(220, 38, 38, 0.8), 1px 0 0 rgba(6, 182, 212, 0.8), 0 0 5px var(--glitch-high); 
                 transform: translate(-1px, 1px) skewX(-8deg); 
-                color: #ffffff; 
+                color: var(--glitch-base); 
             }
             20% { 
-                text-shadow: 1px 0 0 rgba(220, 38, 38, 0.8), -1px 0 0 rgba(6, 182, 212, 0.8), 0 0 5px rgba(255, 255, 255, 0.8); 
+                text-shadow: 1px 0 0 rgba(220, 38, 38, 0.8), -1px 0 0 rgba(6, 182, 212, 0.8), 0 0 5px var(--glitch-high); 
                 transform: translate(1px, -1px) skewX(8deg); 
-                color: #ffffff; 
+                color: var(--glitch-base); 
             }
             30% { 
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(6, 182, 212, 0.6); 
+                text-shadow: 0 0 10px var(--glitch-high), 0 0 20px rgba(6, 182, 212, 0.6); 
                 transform: scale(1.02); 
-                color: #ffffff; 
+                color: var(--glitch-base); 
             }
             100% { transform: translate(0, 0) skewX(0) scale(1); color: inherit; text-shadow: none; }
         }
@@ -174,12 +196,23 @@
             height: 200%;
             z-index: 0;
             pointer-events: none;
+            background-color: #ffffff;
+            transition: background-color 0.5s ease;
+        }
+        
+        html.dark .starfield {
             background-color: #000000;
         }
 
-        .stars-1, .stars-2, .stars-3 {
+        .stars-1, .stars-2, .stars-3, .cosmic-dust, .meteor-shower {
             position: absolute;
             inset: 0;
+            filter: invert(1);
+            transition: filter 0.5s ease;
+        }
+        
+        html.dark .stars-1, html.dark .stars-2, html.dark .stars-3, html.dark .cosmic-dust, html.dark .meteor-shower {
+            filter: invert(0);
         }
 
         .stars-1 {
@@ -285,6 +318,14 @@
             8% { transform: rotate(-45deg) translate(-800px, 0); opacity: 0; }
             100% { transform: rotate(-45deg) translate(-800px, 0); opacity: 0; }
         }
+        
+        /* Shatter Overlay Background */
+        #shatter-overlay {
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        html.dark #shatter-overlay {
+            background-color: rgba(0, 0, 0, 0.95);
+        }
 
         /* Sleek, Clean Fade In Sequence */
         #ui-container {
@@ -303,7 +344,7 @@
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col selection:bg-white selection:text-black relative bg-black overflow-x-hidden">
+<body class="min-h-screen flex flex-col selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black relative bg-white dark:bg-black overflow-x-hidden transition-colors duration-500">
 
     <!-- Drifting Distant Stars Background -->
     <div class="starfield">
@@ -323,34 +364,38 @@
     </div>
 
     <!-- Sand Dissolve Overlay (Hidden by Default) -->
-    <div id="shatter-overlay" class="fixed inset-0 bg-black z-[9999] opacity-0 pointer-events-none flex items-center justify-center px-8 transition-opacity duration-[1500ms]">
+    <div id="shatter-overlay" class="fixed inset-0 z-[9999] opacity-0 pointer-events-none flex items-center justify-center px-8 transition-opacity duration-[1500ms]">
         <!-- Single Line Guarantee -->
         <div id="shatter-quote" class="font-sans text-center text-gray-200 text-[10px] sm:text-sm tracking-widest w-full max-w-5xl whitespace-nowrap overflow-hidden text-ellipsis opacity-0 transition-opacity duration-[2500ms]"></div>
     </div>
 
-    <!-- Main Content - Constrained Centered Stack -->
+    <!-- Main Content - Restored Horizontal Layout -->
     <main id="ui-container" class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-8 lg:px-12 pt-48 sm:pt-64 pb-12 relative z-10 transition-all duration-700">
         
         <!-- Global Header -->
         <header class="flex flex-row flex-wrap items-center gap-3 sm:gap-4 mb-16 ml-2 sm:ml-4 z-50">
-            <button onclick="triggerSystemDissolve('quote')" class="font-sans font-bold tracking-[0.2em] text-base sm:text-lg text-white lightning-charge hover:text-gray-300 transition-colors duration-300 cursor-pointer outline-none leading-none inline-block relative" title="Read the Archives">
+            <button onclick="triggerSystemDissolve('quote')" class="font-sans font-bold tracking-[0.2em] text-base sm:text-lg text-black dark:text-white lightning-charge hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-300 cursor-pointer outline-none leading-none inline-block relative" title="Read the Archives">
                 RyAi™
             </button>
-            <button onclick="triggerSystemDissolve('word')" class="font-techno font-medium tracking-[0.3em] text-[10px] sm:text-xs text-[#666666] hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300 cursor-pointer outline-none leading-none inline-block" title="Word of the Day">
+            <button onclick="triggerSystemDissolve('word')" class="font-techno font-medium tracking-[0.3em] text-[10px] sm:text-xs text-gray-400 dark:text-[#666666] hover:text-cyan-600 dark:hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300 cursor-pointer outline-none leading-none inline-block" title="Word of the Day">
                 //
             </button>
-            <button onclick="toggleAllFolders()" class="font-techno font-medium tracking-[0.3em] text-[10px] sm:text-xs text-[#666666] hover:text-gray-300 transition-colors duration-300 uppercase cursor-pointer outline-none leading-none inline-block" title="Toggle All Archives">
+            <button onclick="toggleAllFolders()" class="font-techno font-medium tracking-[0.3em] text-[10px] sm:text-xs text-gray-400 dark:text-[#666666] hover:text-black dark:hover:text-gray-300 transition-colors duration-300 uppercase cursor-pointer outline-none leading-none inline-block" title="Toggle All Archives">
                 Archive
             </button>
+            <button onclick="toggleTheme()" class="font-techno font-medium tracking-[0.3em] text-[10px] sm:text-xs text-gray-400 dark:text-[#666666] hover:text-cyan-500 dark:hover:text-gray-300 transition-colors duration-300 cursor-pointer outline-none leading-none inline-block flex items-center justify-center" title="Toggle System Mode">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
             <button onclick="generateFact()" class="group outline-none cursor-pointer flex items-center transition-all duration-300 text-left flex-1 min-w-0 max-w-full" title="Generate Random Fact">
-                <span id="fact-display" class="font-techno text-[10px] sm:text-[11px] text-[#444444] group-hover:text-gray-400 tracking-normal transition-colors duration-300 leading-tight truncate w-full block">Welcome to my mind, enjoy your stay.</span>
+                <span id="fact-display" class="font-techno text-[10px] sm:text-[11px] text-gray-500 dark:text-[#444444] group-hover:text-black dark:group-hover:text-gray-400 tracking-normal transition-colors duration-300 leading-tight truncate w-full block">Welcome to my mind, enjoy your stay.</span>
             </button>
         </header>
 
         <!-- SECTION 01: MAR 29, 2026 -->
-        <section class="folder-section w-full mb-10 ml-6 sm:ml-12 is-collapsed" id="epoch-1">
+        <section class="folder-section w-full mb-12 ml-6 sm:ml-12 is-collapsed" id="epoch-1">
             <button class="w-fit pr-8 text-left pb-4 flex items-center cursor-pointer group outline-none" onclick="toggleFolder('epoch-1')">
-                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-[#888888] group-hover:text-gray-300 transition-colors duration-300">
+                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 dark:text-[#888888] group-hover:text-black dark:group-hover:text-gray-300 transition-colors duration-300">
                     <span class="folder-toggle-icon">&gt;</span> MAR 29, 2026
                 </span>
             </button>
@@ -359,21 +404,21 @@
                 <div class="folder-content flex flex-col gap-6">
                     
                     <!-- Archive Item 1 -->
-                    <a href="https://xantheosis.substack.com/p/manifesto-plenum-coagula" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-orange-600/40 hover:shadow-[0_0_15px_rgba(234,88,12,0.15)]">
+                    <a href="#" target="_blank" class="grimoire-card group border border-gray-200 dark:border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-orange-600/40 hover:shadow-[0_0_15px_rgba(234,88,12,0.15)]">
                         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-orange-600/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
                         
                         <div class="relative z-10">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-orange-600 group-hover:border-orange-600/40 transition-all duration-500">
+                                <div class="p-1.5 bg-gray-50 dark:bg-black rounded-md border border-gray-200 dark:border-[#1a1a1a] text-orange-600 group-hover:border-orange-600/40 transition-all duration-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                                 </div>
-                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-orange-600 rounded border border-[#1a1a1a] group-hover:border-orange-600/30 group-hover:shadow-[0_0_8px_rgba(234,88,12,0.25)] transition-all duration-300">[ MANIFESTO ]</span>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-gray-50 dark:bg-black text-orange-600 rounded border border-gray-200 dark:border-[#1a1a1a] group-hover:border-orange-600/30 group-hover:shadow-[0_0_8px_rgba(234,88,12,0.25)] transition-all duration-300">[ MANIFESTO ]</span>
                             </div>
                             
-                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-orange-500 group-hover:text-shadow-[0_0_15px_rgba(234,88,12,0.5)] jester-glow">Plenum Coagula</h3>
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-800 dark:text-gray-200 group-hover:text-orange-500 group-hover:text-shadow-[0_0_15px_rgba(234,88,12,0.5)] jester-glow">Systemic Continuity</h3>
                             
-                            <p class="font-sans text-justify text-[#888888] text-[11px] leading-[1.8]">
-                                A metaphysical framework and core manuscript positing that existence is a continuous, hyper-dense fluid. It categorically rejects null states, voids, and the concept of zero as ontological errors. The work redefines the universe as a fully saturated medium where reality is a complete and unbroken state.
+                            <p class="font-sans text-justify text-gray-500 dark:text-[#888888] text-[11px] leading-[1.8]">
+                                A core manuscript on systemic continuity. It rejects null states and voids as computational errors, framing reality as a complete, unbroken matrix of absolute presence.
                             </p>
                         </div>
                     </a>
@@ -383,9 +428,9 @@
         </section>
 
         <!-- SECTION 02: MAY 04, 2026 -->
-        <section class="folder-section w-full mb-10 ml-6 sm:ml-12 is-collapsed" id="epoch-2">
+        <section class="folder-section w-full mb-12 ml-6 sm:ml-12 is-collapsed" id="epoch-2">
             <button class="w-fit pr-8 text-left pb-4 flex items-center cursor-pointer group outline-none" onclick="toggleFolder('epoch-2')">
-                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-[#888888] group-hover:text-gray-300 transition-colors duration-300">
+                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 dark:text-[#888888] group-hover:text-black dark:group-hover:text-gray-300 transition-colors duration-300">
                     <span class="folder-toggle-icon">&gt;</span> MAY 04, 2026
                 </span>
             </button>
@@ -394,20 +439,20 @@
                 <div class="folder-content flex flex-col gap-6">
 
                     <!-- Archive Item 2 -->
-                    <a href="https://officialhelsing.github.io/Grimoire-Patrocinium/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-purple-500/40 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)]">
+                    <a href="#" target="_blank" class="grimoire-card group border border-gray-200 dark:border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-purple-500/40 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)]">
                         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-purple-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
                         
                         <div class="relative z-10">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-purple-500 group-hover:border-purple-500/40 transition-all duration-500">
+                                <div class="p-1.5 bg-gray-50 dark:bg-black rounded-md border border-gray-200 dark:border-[#1a1a1a] text-purple-500 group-hover:border-purple-500/40 transition-all duration-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                                 </div>
-                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-purple-500 rounded border border-[#1a1a1a] group-hover:border-purple-500/30 group-hover:shadow-[0_0_8px_rgba(168,85,247,0.2)] transition-all duration-300">[ MANUAL ]</span>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-gray-50 dark:bg-black text-purple-500 rounded border border-gray-200 dark:border-[#1a1a1a] group-hover:border-purple-500/30 group-hover:shadow-[0_0_8px_rgba(168,85,247,0.2)] transition-all duration-300">[ MANUAL ]</span>
                             </div>
                             
-                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-purple-400 group-hover:text-shadow-[0_0_15px_rgba(168,85,247,0.4)] jester-glow">Grimoire Patrocinium</h3>
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-800 dark:text-gray-200 group-hover:text-purple-400 group-hover:text-shadow-[0_0_15px_rgba(168,85,247,0.4)] jester-glow">Grimoire Patrocinium</h3>
                             
-                            <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                            <p class="font-sans text-justify text-[11px] text-gray-500 dark:text-[#888888] leading-[1.8]">
                                 A comprehensive defense architecture and digital manual designed to counteract psychological, algorithmic, and systemic influence. Built upon an archival analysis of one hundred historical texts, it provides a structured cognitive framework to maintain intellectual sovereignty and absolute focus.
                             </p>
                         </div>
@@ -418,9 +463,9 @@
         </section>
 
         <!-- SECTION 03: JUN 01, 2026 -->
-        <section class="folder-section w-full mb-10 ml-6 sm:ml-12 is-collapsed" id="epoch-3">
+        <section class="folder-section w-full mb-12 ml-6 sm:ml-12 is-collapsed" id="epoch-3">
             <button class="w-fit pr-8 text-left pb-4 flex items-center cursor-pointer group outline-none" onclick="toggleFolder('epoch-3')">
-                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-[#888888] group-hover:text-gray-300 transition-colors duration-300">
+                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 dark:text-[#888888] group-hover:text-black dark:group-hover:text-gray-300 transition-colors duration-300">
                     <span class="folder-toggle-icon">&gt;</span> JUN 01, 2026
                 </span>
             </button>
@@ -429,20 +474,20 @@
                 <div class="folder-content flex flex-col gap-4">
 
                     <!-- Archive Item 3 -->
-                    <a href="https://officialhelsing.github.io/The-Anatomy-of-Positivity/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-emerald-500/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                    <a href="https://officialhelsing.github.io/The-Anatomy-of-Positivity/" target="_blank" class="grimoire-card group border border-gray-200 dark:border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-emerald-500/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]">
                         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-emerald-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
                         
                         <div class="relative z-10">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-emerald-500 group-hover:border-emerald-500/40 transition-all duration-500">
+                                <div class="p-1.5 bg-gray-50 dark:bg-black rounded-md border border-gray-200 dark:border-[#1a1a1a] text-emerald-500 group-hover:border-emerald-500/40 transition-all duration-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                                 </div>
-                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-emerald-500 rounded border border-[#1a1a1a] group-hover:border-emerald-500/30 group-hover:shadow-[0_0_8px_rgba(16,185,129,0.25)] transition-all duration-300">[ SYNTHESIS ]</span>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-gray-50 dark:bg-black text-emerald-500 rounded border border-gray-200 dark:border-[#1a1a1a] group-hover:border-emerald-500/30 group-hover:shadow-[0_0_8px_rgba(16,185,129,0.25)] transition-all duration-300">[ SYNTHESIS ]</span>
                             </div>
                             
-                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-emerald-400 group-hover:text-shadow-[0_0_15px_rgba(16,185,129,0.5)] jester-glow">The Anatomy of Positivity</h3>
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-800 dark:text-gray-200 group-hover:text-emerald-400 group-hover:text-shadow-[0_0_15px_rgba(16,185,129,0.5)] jester-glow">The Anatomy of Positivity</h3>
                             
-                            <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                            <p class="font-sans text-justify text-[11px] text-gray-500 dark:text-[#888888] leading-[1.8]">
                                 A synthesis of over 500 philosophical and literary perspectives woven into a cohesive narrative. It recontextualizes anxiety as acoustic dissonance and frames positivity not as an external goal to be chased, but as an inherent, observable state achieved through active surrender to cosmic density.
                             </p>
                         </div>
@@ -453,9 +498,9 @@
         </section>
 
         <!-- SECTION 04: JUN 10, 2026 -->
-        <section class="folder-section w-full mb-10 ml-6 sm:ml-12 is-collapsed" id="epoch-4">
+        <section class="folder-section w-full mb-12 ml-6 sm:ml-12 is-collapsed" id="epoch-4">
             <button class="w-fit pr-8 text-left pb-4 flex items-center cursor-pointer group outline-none" onclick="toggleFolder('epoch-4')">
-                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-[#888888] group-hover:text-gray-300 transition-colors duration-300">
+                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 dark:text-[#888888] group-hover:text-black dark:group-hover:text-gray-300 transition-colors duration-300">
                     <span class="folder-toggle-icon">&gt;</span> JUN 10, 2026
                 </span>
             </button>
@@ -464,45 +509,45 @@
                 <div class="folder-content flex flex-col gap-6">
 
                     <!-- Archive Item 4 -->
-                    <a href="https://officialhelsing.github.io/Ryans-Map-Territory-Conjecture/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+                    <a href="#" target="_blank" class="grimoire-card group border border-gray-200 dark:border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(6,182,212,0.15)]">
                         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-cyan-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
                         
                         <div class="relative z-10">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-cyan-500 group-hover:border-cyan-500/40 transition-all duration-500">
+                                <div class="p-1.5 bg-gray-50 dark:bg-black rounded-md border border-gray-200 dark:border-[#1a1a1a] text-cyan-500 group-hover:border-cyan-500/40 transition-all duration-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
                                 </div>
-                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-cyan-500 rounded border border-[#1a1a1a] group-hover:border-cyan-500/30 group-hover:shadow-[0_0_8px_rgba(6,182,212,0.2)] transition-all duration-300">[ CONJECTURE ]</span>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-gray-50 dark:bg-black text-cyan-500 rounded border border-gray-200 dark:border-[#1a1a1a] group-hover:border-cyan-500/30 group-hover:shadow-[0_0_8px_rgba(6,182,212,0.2)] transition-all duration-300">[ CONJECTURE ]</span>
                             </div>
                             
-                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-cyan-400 group-hover:text-shadow-[0_0_15px_rgba(6,182,212,0.4)] jester-glow">Ryan's Map-Territory Conjecture</h3>
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-800 dark:text-gray-200 group-hover:text-cyan-400 group-hover:text-shadow-[0_0_15px_rgba(6,182,212,0.4)] jester-glow">Terminal Epistemic Limits</h3>
                             
-                            <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
-                                An epistemological and ontological thesis positing a terminal structural limit to scientific representation. The conjecture asserts that any scientific model aiming for perfect isomorphism with objective reality inevitably ceases to function as a descriptive map. Upon achieving absolute parity in causal, spatial, and informational density, the model undergoes an unavoidable ontological collapse, becoming completely identical to the territory it seeks to represent. Consequently, a perfect and comprehensively complete science is proven to be logically impossible, permanently bounding the scientific method below an epistemic event horizon.
+                            <p class="font-sans text-justify text-[11px] text-gray-500 dark:text-[#888888] leading-[1.8]">
+                                An epistemological thesis positing a structural limit to scientific representation. The framework asserts that any theoretical construct aiming for perfect isomorphism with objective reality inevitably ceases to function as a descriptive tool.
                             </p>
                         </div>
                     </a>
 
                     <!-- The Formal Defense (Subset) -->
                     <div class="relative ml-8 sm:ml-12 group/contingent w-[90%] sm:w-[85%]">
-                        <div class="absolute -left-5 sm:-left-7 top-1/2 w-5 sm:w-7 h-px bg-[#222] group-hover/contingent:bg-cyan-600/50 transition-colors duration-500"></div>
-                        <div class="absolute -left-5 sm:-left-7 -top-4 bottom-1/2 w-px bg-[#222] group-hover/contingent:bg-cyan-600/50 transition-colors duration-500"></div>
+                        <div class="absolute -left-5 sm:-left-7 top-1/2 w-5 sm:w-7 h-px bg-gray-300 dark:bg-[#222] group-hover/contingent:bg-cyan-600/50 transition-colors duration-500"></div>
+                        <div class="absolute -left-5 sm:-left-7 -top-4 bottom-1/2 w-px bg-gray-300 dark:bg-[#222] group-hover/contingent:bg-cyan-600/50 transition-colors duration-500"></div>
                         
-                        <a href="https://officialhelsing.github.io/Formal-Defense-of-Ryans-Map-Territory-Conjecture/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-4 sm:p-5 relative overflow-hidden block w-full cursor-pointer hover:border-cyan-600/40 hover:shadow-[0_0_15px_rgba(8,145,178,0.15)] bg-black">
+                        <a href="#" target="_blank" class="grimoire-card group border border-gray-200 dark:border-[#1a1a1a] rounded-xl p-4 sm:p-5 relative overflow-hidden block w-full cursor-pointer hover:border-cyan-600/40 hover:shadow-[0_0_15px_rgba(8,145,178,0.15)]">
                             <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-cyan-600/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
                             
                             <div class="relative z-10">
                                 <div class="flex items-center gap-3 mb-4">
-                                    <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-cyan-600 group-hover:border-cyan-600/50 transition-all duration-500">
+                                    <div class="p-1.5 bg-gray-50 dark:bg-black rounded-md border border-gray-200 dark:border-[#1a1a1a] text-cyan-600 group-hover:border-cyan-600/50 transition-all duration-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
                                 </div>
-                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-cyan-600 rounded border border-[#1a1a1a] group-hover:border-cyan-600/40 group-hover:shadow-[0_0_8px_rgba(8,145,178,0.3)] transition-all duration-300">[ CONJECTURE ]</span>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-gray-50 dark:bg-black text-cyan-600 rounded border border-gray-200 dark:border-[#1a1a1a] group-hover:border-cyan-600/40 group-hover:shadow-[0_0_8px_rgba(8,145,178,0.3)] transition-all duration-300">[ CONJECTURE ]</span>
                             </div>
                             
-                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-cyan-500 group-hover:text-shadow-[0_0_15px_rgba(8,145,178,0.5)] transition-all duration-400 jester-glow">The Formal Defense</h3>
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-800 dark:text-gray-200 group-hover:text-cyan-500 group-hover:text-shadow-[0_0_15px_rgba(8,145,178,0.5)] transition-all duration-400 jester-glow">The Formal Defense</h3>
                                 
-                                <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
-                                    The rigorous logical structuring and technical documentation that supports the core conjecture. This defense systematically dismantles the skeptical trilemma, providing the necessary foundational proofs to validate continuous-state axioms and their direct implications for digital security.
+                                <p class="font-sans text-justify text-[11px] text-gray-500 dark:text-[#888888] leading-[1.8]">
+                                    The rigorous logical structuring and technical documentation that supports the core epistemic thesis.
                                 </p>
                             </div>
                         </a>
@@ -513,9 +558,9 @@
         </section>
 
         <!-- SECTION 05: JUN 14, 2026 -->
-        <section class="folder-section w-full mb-10 ml-6 sm:ml-12 is-collapsed" id="epoch-5">
+        <section class="folder-section w-full mb-12 ml-6 sm:ml-12 is-collapsed" id="epoch-5">
             <button class="w-fit pr-8 text-left pb-4 flex items-center cursor-pointer group outline-none" onclick="toggleFolder('epoch-5')">
-                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-[#888888] group-hover:text-gray-300 transition-colors duration-300">
+                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 dark:text-[#888888] group-hover:text-black dark:group-hover:text-gray-300 transition-colors duration-300">
                     <span class="folder-toggle-icon">&gt;</span> JUN 14, 2026
                 </span>
             </button>
@@ -524,20 +569,20 @@
                 <div class="folder-content flex flex-col gap-6">
                     
                     <!-- Archive Item 5 -->
-                    <a href="https://officialhelsing.github.io/The-Logical-Incoherence-of-Recursive-Temporal-Causality/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-yellow-500/40 hover:shadow-[0_0_15px_rgba(234,179,8,0.1)]">
+                    <a href="https://officialhelsing.github.io/The-Logical-Incoherence-of-Recursive-Temporal-Causality/" target="_blank" class="grimoire-card group border border-gray-200 dark:border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-yellow-500/40 hover:shadow-[0_0_15px_rgba(234,179,8,0.1)]">
                         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-yellow-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
                         
                         <div class="relative z-10">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-yellow-500 group-hover:border-yellow-500/40 transition-all duration-500">
+                                <div class="p-1.5 bg-gray-50 dark:bg-black rounded-md border border-gray-200 dark:border-[#1a1a1a] text-yellow-500 group-hover:border-yellow-500/40 transition-all duration-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
                                 </div>
-                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-yellow-500 rounded border border-[#1a1a1a] group-hover:border-yellow-500/30 group-hover:shadow-[0_0_8px_rgba(234,179,8,0.2)] transition-all duration-300">[ ANALYSIS ]</span>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-gray-50 dark:bg-black text-yellow-500 rounded border border-gray-200 dark:border-[#1a1a1a] group-hover:border-yellow-500/30 group-hover:shadow-[0_0_8px_rgba(234,179,8,0.2)] transition-all duration-300">[ ANALYSIS ]</span>
                             </div>
                             
-                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-yellow-400 group-hover:text-shadow-[0_0_15px_rgba(234,179,8,0.4)] jester-glow">The Logical Incoherence of Recursive Temporal Causality</h3>
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-800 dark:text-gray-200 group-hover:text-yellow-400 group-hover:text-shadow-[0_0_15px_rgba(234,179,8,0.4)] jester-glow">The Logical Incoherence of Recursive Temporal Causality</h3>
                             
-                            <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                            <p class="font-sans text-justify text-[11px] text-gray-500 dark:text-[#888888] leading-[1.8]">
                                 A formal argument demonstrating that Shane Carruth's Primer (2004) exhibits logical incoherence in its model of recursive temporal causality, despite its reputation for internal rigor. The central claim asserts that the film's mechanism of time travel produces a structure in which causal identity, temporal ordering, and explanatory grounding inevitably collapse under the recursive duplication of agents.
                             </p>
                         </div>
@@ -796,6 +841,10 @@
 
         let isShattering = false;
 
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
         function generateFact() {
             const factEl = document.getElementById('fact-display');
             const randomFact = factsLibrary[Math.floor(Math.random() * factsLibrary.length)];
@@ -818,14 +867,14 @@
                 const textPart = parts[0];
                 const authorPart = parts[1] || "Unknown";
                 // Enforced single line rendering
-                contentHTML = `<span class="text-gray-200">${textPart}</span> <span class="text-[#888888] font-techno text-xs sm:text-sm ml-2">- ${authorPart}</span>`;
+                contentHTML = `<span class="text-gray-900 dark:text-gray-200">${textPart}</span> <span class="text-gray-500 dark:text-[#888888] font-techno text-xs sm:text-sm ml-2">- ${authorPart}</span>`;
             } else {
                 const randomWord = wordsLibrary[Math.floor(Math.random() * wordsLibrary.length)];
                 const parts = randomWord.split(" - ");
                 const wordPart = parts[0];
                 const defPart = parts[1] || "";
                 // Enforced single line rendering
-                contentHTML = `<span class="text-gray-200 font-techno uppercase tracking-[0.3em]">${wordPart}</span> <span class="text-gray-500 font-sans ml-3">// ${defPart}</span>`;
+                contentHTML = `<span class="text-gray-900 dark:text-gray-200 font-techno uppercase tracking-[0.3em]">${wordPart}</span> <span class="text-gray-500 font-sans ml-3">// ${defPart}</span>`;
             }
 
             quoteEl.innerHTML = contentHTML;
