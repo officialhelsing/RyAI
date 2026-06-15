@@ -81,6 +81,31 @@
             }
         }
 
+        /* Specialized one-time shock for opening archives */
+        .glitch-shock {
+            animation: single-shock 0.8s ease-in-out forwards !important;
+        }
+
+        @keyframes single-shock {
+            0% { transform: translate(0, 0) skewX(0); color: inherit; }
+            10% { 
+                text-shadow: -1px 0 0 rgba(220, 38, 38, 0.8), 1px 0 0 rgba(6, 182, 212, 0.8), 0 0 5px rgba(255, 255, 255, 0.8); 
+                transform: translate(-1px, 1px) skewX(-8deg); 
+                color: #ffffff; 
+            }
+            20% { 
+                text-shadow: 1px 0 0 rgba(220, 38, 38, 0.8), -1px 0 0 rgba(6, 182, 212, 0.8), 0 0 5px rgba(255, 255, 255, 0.8); 
+                transform: translate(1px, -1px) skewX(8deg); 
+                color: #ffffff; 
+            }
+            30% { 
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(6, 182, 212, 0.6); 
+                transform: scale(1.02); 
+                color: #ffffff; 
+            }
+            100% { transform: translate(0, 0) skewX(0) scale(1); color: inherit; text-shadow: none; }
+        }
+
         /* Secondary System Glitches */
         .glitch-minor {
             display: inline-block;
@@ -120,12 +145,22 @@
             transform: rotate(0deg); /* Closed */
         }
 
-        .folder-content {
+        /* Smooth CSS Grid animation for opening folders */
+        .folder-content-wrapper {
             display: grid;
+            grid-template-rows: 1fr;
+            transition: grid-template-rows 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
         }
 
-        .is-collapsed .folder-content {
-            display: none;
+        .is-collapsed .folder-content-wrapper {
+            grid-template-rows: 0fr;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .folder-content {
+            overflow: hidden;
         }
 
         /* Sparse, Swirling Starfield Environment */
@@ -295,22 +330,18 @@
     <main id="ui-container" class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-8 lg:px-12 pt-48 sm:pt-64 pb-12 relative z-10 transition-all duration-700">
         
         <!-- Global Header -->
-        <header class="flex flex-col mb-16 ml-2 sm:ml-4 z-50">
-            <div class="flex flex-row items-center gap-3">
-                <button onclick="triggerSystemDissolve('quote')" class="font-sans font-bold tracking-[0.2em] text-base sm:text-lg text-white lightning-charge hover:text-gray-300 transition-colors duration-300 cursor-pointer outline-none leading-none" title="Read the Archives">
-                    RyAI™
-                </button>
-                <div class="flex flex-row items-center gap-2 pt-0.5">
-                    <button onclick="triggerSystemDissolve('word')" class="font-techno font-medium tracking-[0.3em] text-[10px] sm:text-xs text-[#666666] hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300 cursor-pointer outline-none leading-none" title="Word of the Day">
-                        //
-                    </button>
-                    <button onclick="toggleAllFolders()" class="font-techno font-medium tracking-[0.3em] text-[10px] sm:text-xs text-[#666666] hover:text-gray-300 transition-colors duration-300 uppercase cursor-pointer outline-none leading-none" title="Toggle All Archives">
-                        Archive
-                    </button>
-                </div>
-            </div>
-            <button onclick="generateFact()" class="group outline-none cursor-pointer flex items-center transition-all duration-300 mt-1.5 pl-0.5 text-left max-w-full" title="Generate Random Fact">
-                <span id="fact-display" class="font-techno text-[11px] sm:text-xs text-[#333333] group-hover:text-gray-400 tracking-normal transition-colors duration-300 leading-tight">Welcome to my mind, enjoy your stay.</span>
+        <header class="flex flex-row flex-wrap items-center gap-3 sm:gap-4 mb-16 ml-2 sm:ml-4 z-50">
+            <button onclick="triggerSystemDissolve('quote')" class="font-sans font-bold tracking-[0.2em] text-base sm:text-lg text-white lightning-charge hover:text-gray-300 transition-colors duration-300 cursor-pointer outline-none leading-none" title="Read the Archives">
+                RyAI™
+            </button>
+            <button onclick="triggerSystemDissolve('word')" class="font-techno font-medium tracking-[0.3em] text-[10px] sm:text-xs text-[#666666] hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300 cursor-pointer outline-none leading-none" title="Word of the Day">
+                //
+            </button>
+            <button onclick="toggleAllFolders()" class="font-techno font-medium tracking-[0.3em] text-[10px] sm:text-xs text-[#666666] hover:text-gray-300 transition-colors duration-300 uppercase cursor-pointer outline-none leading-none" title="Toggle All Archives">
+                Archive
+            </button>
+            <button onclick="generateFact()" class="group outline-none cursor-pointer flex items-center transition-all duration-300 text-left flex-1 min-w-0 max-w-full" title="Generate Random Fact">
+                <span id="fact-display" class="font-techno text-[9px] sm:text-[10px] text-[#333333] group-hover:text-[#555555] tracking-normal transition-colors duration-300 leading-tight truncate w-full block">Welcome to my mind, enjoy your stay.</span>
             </button>
         </header>
 
@@ -322,29 +353,31 @@
                 </span>
             </button>
 
-            <div class="folder-content flex flex-col gap-6 w-full">
-                
-                <!-- Plenum Coagula (Deep Orange Theme) -->
-                <a href="https://xantheosis.substack.com/p/manifesto-plenum-coagula" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-orange-600/40 hover:shadow-[0_0_15px_rgba(234,88,12,0.15)]">
-                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-orange-600/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+            <div class="folder-content-wrapper w-full">
+                <div class="folder-content flex flex-col gap-6 w-full">
                     
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-orange-600 group-hover:border-orange-600/40 transition-all duration-500">
-                                <!-- Drafting Pen Icon -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    <!-- Plenum Coagula (Deep Orange Theme) -->
+                    <a href="https://xantheosis.substack.com/p/manifesto-plenum-coagula" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-orange-600/40 hover:shadow-[0_0_15px_rgba(234,88,12,0.15)]">
+                        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-orange-600/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-orange-600 group-hover:border-orange-600/40 transition-all duration-500">
+                                    <!-- Drafting Pen Icon -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                </div>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-orange-600 rounded border border-[#1a1a1a] group-hover:border-orange-600/30 group-hover:shadow-[0_0_8px_rgba(234,88,12,0.25)] transition-all duration-300">[ MANIFESTO ]</span>
                             </div>
-                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-orange-600 rounded border border-[#1a1a1a] group-hover:border-orange-600/30 group-hover:shadow-[0_0_8px_rgba(234,88,12,0.25)] transition-all duration-300">[ MANIFESTO ]</span>
+                            
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-orange-500 group-hover:text-shadow-[0_0_15px_rgba(234,88,12,0.5)] jester-glow">Plenum Coagula</h3>
+                            
+                            <p class="font-sans text-justify text-[#888888] text-[11px] leading-[1.8]">
+                                A metaphysical framework and core manuscript positing that existence is a continuous, hyper-dense fluid. It categorically rejects null states, voids, and the concept of zero as ontological errors. The work redefines the universe as a fully saturated medium where reality is a complete and unbroken state.
+                            </p>
                         </div>
-                        
-                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-orange-500 group-hover:text-shadow-[0_0_15px_rgba(234,88,12,0.5)] jester-glow">Plenum Coagula</h3>
-                        
-                        <p class="font-sans text-justify text-[#888888] text-[11px] leading-[1.8]">
-                            A metaphysical framework and core manuscript positing that existence is a continuous, hyper-dense fluid. It categorically rejects null states, voids, and the concept of zero as ontological errors. The work redefines the universe as a fully saturated medium where reality is a complete and unbroken state.
-                        </p>
-                    </div>
-                </a>
+                    </a>
 
+                </div>
             </div>
         </section>
 
@@ -356,29 +389,31 @@
                 </span>
             </button>
 
-            <div class="folder-content flex flex-col gap-6 w-full">
+            <div class="folder-content-wrapper w-full">
+                <div class="folder-content flex flex-col gap-6 w-full">
 
-                <!-- Grimoire Patrocinium (Purple Theme) -->
-                <a href="https://officialhelsing.github.io/Grimoire-Patrocinium/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-purple-500/40 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)]">
-                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-purple-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
-                    
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-purple-500 group-hover:border-purple-500/40 transition-all duration-500">
-                                <!-- Open Book/Manual Icon -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                    <!-- Grimoire Patrocinium (Purple Theme) -->
+                    <a href="https://officialhelsing.github.io/Grimoire-Patrocinium/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-purple-500/40 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)]">
+                        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-purple-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-purple-500 group-hover:border-purple-500/40 transition-all duration-500">
+                                    <!-- Open Book/Manual Icon -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                                </div>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-purple-500 rounded border border-[#1a1a1a] group-hover:border-purple-500/30 group-hover:shadow-[0_0_8px_rgba(168,85,247,0.2)] transition-all duration-300">[ MANUAL ]</span>
                             </div>
-                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-purple-500 rounded border border-[#1a1a1a] group-hover:border-purple-500/30 group-hover:shadow-[0_0_8px_rgba(168,85,247,0.2)] transition-all duration-300">[ MANUAL ]</span>
+                            
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-purple-400 group-hover:text-shadow-[0_0_15px_rgba(168,85,247,0.4)] jester-glow">Grimoire Patrocinium</h3>
+                            
+                            <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                                A comprehensive defense architecture and digital manual designed to counteract psychological, algorithmic, and systemic influence. Built upon an archival analysis of one hundred historical texts, it provides a structured cognitive framework to maintain intellectual sovereignty and absolute focus.
+                            </p>
                         </div>
-                        
-                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-purple-400 group-hover:text-shadow-[0_0_15px_rgba(168,85,247,0.4)] jester-glow">Grimoire Patrocinium</h3>
-                        
-                        <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
-                            A comprehensive defense architecture and digital manual designed to counteract psychological, algorithmic, and systemic influence. Built upon an archival analysis of one hundred historical texts, it provides a structured cognitive framework to maintain intellectual sovereignty and absolute focus.
-                        </p>
-                    </div>
-                </a>
+                    </a>
 
+                </div>
             </div>
         </section>
 
@@ -390,29 +425,31 @@
                 </span>
             </button>
 
-            <div class="folder-content flex flex-col gap-4 w-full">
+            <div class="folder-content-wrapper w-full">
+                <div class="folder-content flex flex-col gap-4 w-full">
 
-                <!-- The Anatomy of Positivity (Emerald Theme) -->
-                <a href="https://officialhelsing.github.io/The-Anatomy-of-Positivity/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-emerald-500/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]">
-                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-emerald-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
-                    
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-emerald-500 group-hover:border-emerald-500/40 transition-all duration-500">
-                                <!-- Radiant Sun/Frequency Icon -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <!-- The Anatomy of Positivity (Emerald Theme) -->
+                    <a href="https://officialhelsing.github.io/The-Anatomy-of-Positivity/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-emerald-500/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-emerald-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-emerald-500 group-hover:border-emerald-500/40 transition-all duration-500">
+                                    <!-- Radiant Sun/Frequency Icon -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                                </div>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-emerald-500 rounded border border-[#1a1a1a] group-hover:border-emerald-500/30 group-hover:shadow-[0_0_8px_rgba(16,185,129,0.25)] transition-all duration-300">[ SYNTHESIS ]</span>
                             </div>
-                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-emerald-500 rounded border border-[#1a1a1a] group-hover:border-emerald-500/30 group-hover:shadow-[0_0_8px_rgba(16,185,129,0.25)] transition-all duration-300">[ SYNTHESIS ]</span>
+                            
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-emerald-400 group-hover:text-shadow-[0_0_15px_rgba(16,185,129,0.5)] jester-glow">The Anatomy of Positivity</h3>
+                            
+                            <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                                A synthesis of over 500 philosophical and literary perspectives woven into a cohesive narrative. It recontextualizes anxiety as acoustic dissonance and frames positivity not as an external goal to be chased, but as an inherent, observable state achieved through active surrender to cosmic density.
+                            </p>
                         </div>
-                        
-                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-emerald-400 group-hover:text-shadow-[0_0_15px_rgba(16,185,129,0.5)] jester-glow">The Anatomy of Positivity</h3>
-                        
-                        <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
-                            A synthesis of over 500 philosophical and literary perspectives woven into a cohesive narrative. It recontextualizes anxiety as acoustic dissonance and frames positivity not as an external goal to be chased, but as an inherent, observable state achieved through active surrender to cosmic density.
-                        </p>
-                    </div>
-                </a>
+                    </a>
 
+                </div>
             </div>
         </section>
 
@@ -424,56 +461,58 @@
                 </span>
             </button>
 
-            <div class="folder-content flex flex-col gap-6 w-full">
+            <div class="folder-content-wrapper w-full">
+                <div class="folder-content flex flex-col gap-6 w-full">
 
-                <!-- Ryan's Map-Territory Conjecture (Cyan Theme) -->
-                <a href="https://officialhelsing.github.io/Ryans-Map-Territory-Conjecture/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(6,182,212,0.15)]">
-                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-cyan-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
-                    
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-cyan-500 group-hover:border-cyan-500/40 transition-all duration-500">
-                                <!-- Map Icon -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
-                            </div>
-                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-cyan-500 rounded border border-[#1a1a1a] group-hover:border-cyan-500/30 group-hover:shadow-[0_0_8px_rgba(6,182,212,0.2)] transition-all duration-300">[ CONJECTURE ]</span>
-                        </div>
-                        
-                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-cyan-400 group-hover:text-shadow-[0_0_15px_rgba(6,182,212,0.4)] jester-glow">Ryan's Map-Territory Conjecture</h3>
-                        
-                        <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
-                            An epistemological and ontological thesis positing a terminal structural limit to scientific representation. The conjecture asserts that any scientific model aiming for perfect isomorphism with objective reality inevitably ceases to function as a descriptive map. Upon achieving absolute parity in causal, spatial, and informational density, the model undergoes an unavoidable ontological collapse, becoming completely identical to the territory it seeks to represent. Consequently, a perfect and comprehensively complete science is proven to be logically impossible, permanently bounding the scientific method below an epistemic event horizon.
-                        </p>
-                    </div>
-                </a>
-
-                <!-- The Formal Defense (Subset) -->
-                <div class="relative ml-8 sm:ml-12 group/contingent w-[90%] sm:w-[85%]">
-                    <!-- Circuit Trace Connection Lines (Left Sided) -->
-                    <div class="absolute -left-5 sm:-left-7 top-1/2 w-5 sm:w-7 h-px bg-[#222] group-hover/contingent:bg-cyan-600/50 transition-colors duration-500"></div>
-                    <div class="absolute -left-5 sm:-left-7 -top-4 bottom-1/2 w-px bg-[#222] group-hover/contingent:bg-cyan-600/50 transition-colors duration-500"></div>
-                    
-                    <a href="https://officialhelsing.github.io/Formal-Defense-of-Ryans-Map-Territory-Conjecture/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-4 sm:p-5 relative overflow-hidden block w-full cursor-pointer hover:border-cyan-600/40 hover:shadow-[0_0_15px_rgba(8,145,178,0.15)] bg-black">
-                        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-cyan-600/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                    <!-- Ryan's Map-Territory Conjecture (Cyan Theme) -->
+                    <a href="https://officialhelsing.github.io/Ryans-Map-Territory-Conjecture/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+                        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-cyan-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
                         
                         <div class="relative z-10">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-cyan-600 group-hover:border-cyan-600/50 transition-all duration-500">
-                                <!-- Map Icon (Matching Conjecture) -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-cyan-500 group-hover:border-cyan-500/40 transition-all duration-500">
+                                    <!-- Map Icon -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+                                </div>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-cyan-500 rounded border border-[#1a1a1a] group-hover:border-cyan-500/30 group-hover:shadow-[0_0_8px_rgba(6,182,212,0.2)] transition-all duration-300">[ CONJECTURE ]</span>
                             </div>
-                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-cyan-600 rounded border border-[#1a1a1a] group-hover:border-cyan-600/40 group-hover:shadow-[0_0_8px_rgba(8,145,178,0.3)] transition-all duration-300">[ CONJECTURE ]</span>
-                        </div>
-                        
-                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-cyan-500 group-hover:text-shadow-[0_0_15px_rgba(8,145,178,0.5)] transition-all duration-400 jester-glow">The Formal Defense</h3>
+                            
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-cyan-400 group-hover:text-shadow-[0_0_15px_rgba(6,182,212,0.4)] jester-glow">Ryan's Map-Territory Conjecture</h3>
                             
                             <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
-                                The rigorous logical structuring and technical documentation that supports the core conjecture. This defense systematically dismantles the skeptical trilemma, providing the necessary foundational proofs to validate continuous-state axioms and their direct implications for digital security.
+                                An epistemological and ontological thesis positing a terminal structural limit to scientific representation. The conjecture asserts that any scientific model aiming for perfect isomorphism with objective reality inevitably ceases to function as a descriptive map. Upon achieving absolute parity in causal, spatial, and informational density, the model undergoes an unavoidable ontological collapse, becoming completely identical to the territory it seeks to represent. Consequently, a perfect and comprehensively complete science is proven to be logically impossible, permanently bounding the scientific method below an epistemic event horizon.
                             </p>
                         </div>
                     </a>
-                </div>
 
+                    <!-- The Formal Defense (Subset) -->
+                    <div class="relative ml-8 sm:ml-12 group/contingent w-[90%] sm:w-[85%]">
+                        <!-- Circuit Trace Connection Lines (Left Sided) -->
+                        <div class="absolute -left-5 sm:-left-7 top-1/2 w-5 sm:w-7 h-px bg-[#222] group-hover/contingent:bg-cyan-600/50 transition-colors duration-500"></div>
+                        <div class="absolute -left-5 sm:-left-7 -top-4 bottom-1/2 w-px bg-[#222] group-hover/contingent:bg-cyan-600/50 transition-colors duration-500"></div>
+                        
+                        <a href="https://officialhelsing.github.io/Formal-Defense-of-Ryans-Map-Territory-Conjecture/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-4 sm:p-5 relative overflow-hidden block w-full cursor-pointer hover:border-cyan-600/40 hover:shadow-[0_0_15px_rgba(8,145,178,0.15)] bg-black">
+                            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-cyan-600/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                            
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-cyan-600 group-hover:border-cyan-600/50 transition-all duration-500">
+                                    <!-- Map Icon (Matching Conjecture) -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+                                </div>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-cyan-600 rounded border border-[#1a1a1a] group-hover:border-cyan-600/40 group-hover:shadow-[0_0_8px_rgba(8,145,178,0.3)] transition-all duration-300">[ CONJECTURE ]</span>
+                            </div>
+                            
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-cyan-500 group-hover:text-shadow-[0_0_15px_rgba(8,145,178,0.5)] transition-all duration-400 jester-glow">The Formal Defense</h3>
+                                
+                                <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                                    The rigorous logical structuring and technical documentation that supports the core conjecture. This defense systematically dismantles the skeptical trilemma, providing the necessary foundational proofs to validate continuous-state axioms and their direct implications for digital security.
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
             </div>
         </section>
 
@@ -485,36 +524,37 @@
                 </span>
             </button>
 
-            <div class="folder-content flex flex-col gap-6 w-full">
-                
-                <!-- The Logical Incoherence of Recursive Temporal Causality (Yellow Theme) -->
-                <a href="https://officialhelsing.github.io/The-Logical-Incoherence-of-Recursive-Temporal-Causality/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-yellow-500/40 hover:shadow-[0_0_15px_rgba(234,179,8,0.1)]">
-                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-yellow-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+            <div class="folder-content-wrapper w-full">
+                <div class="folder-content flex flex-col gap-6 w-full">
                     
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-yellow-500 group-hover:border-yellow-500/40 transition-all duration-500">
-                                <!-- Recursive/Loop Icon -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
+                    <!-- The Logical Incoherence of Recursive Temporal Causality (Yellow Theme) -->
+                    <a href="https://officialhelsing.github.io/The-Logical-Incoherence-of-Recursive-Temporal-Causality/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-yellow-500/40 hover:shadow-[0_0_15px_rgba(234,179,8,0.1)]">
+                        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-yellow-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-yellow-500 group-hover:border-yellow-500/40 transition-all duration-500">
+                                    <!-- Recursive/Loop Icon -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
+                                </div>
+                                <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-yellow-500 rounded border border-[#1a1a1a] group-hover:border-yellow-500/30 group-hover:shadow-[0_0_8px_rgba(234,179,8,0.2)] transition-all duration-300">[ ANALYSIS ]</span>
                             </div>
-                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-yellow-500 rounded border border-[#1a1a1a] group-hover:border-yellow-500/30 group-hover:shadow-[0_0_8px_rgba(234,179,8,0.2)] transition-all duration-300">[ ANALYSIS ]</span>
+                            
+                            <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-yellow-400 group-hover:text-shadow-[0_0_15px_rgba(234,179,8,0.4)] jester-glow">The Logical Incoherence of Recursive Temporal Causality</h3>
+                            
+                            <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                                A formal argument demonstrating that Shane Carruth's Primer (2004) exhibits logical incoherence in its model of recursive temporal causality, despite its reputation for internal rigor. The central claim asserts that the film's mechanism of time travel produces a structure in which causal identity, temporal ordering, and explanatory grounding inevitably collapse under the recursive duplication of agents.
+                            </p>
                         </div>
-                        
-                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-yellow-400 group-hover:text-shadow-[0_0_15px_rgba(234,179,8,0.4)] jester-glow">The Logical Incoherence of Recursive Temporal Causality</h3>
-                        
-                        <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
-                            A formal argument demonstrating that Shane Carruth's Primer (2004) exhibits logical incoherence in its model of recursive temporal causality, despite its reputation for internal rigor. The central claim asserts that the film's mechanism of time travel produces a structure in which causal identity, temporal ordering, and explanatory grounding inevitably collapse under the recursive duplication of agents.
-                        </p>
-                    </div>
-                </a>
+                    </a>
 
+                </div>
             </div>
         </section>
     </main>
 
     <!-- Interaction Script -->
     <script>
-        // Formatted with standard hyphens (no em dashes) to ensure clean single-line splitting
         const wisdomLibrary = [
             "The limits of my language mean the limits of my world. - Ludwig Wittgenstein",
             "We suffer more often in imagination than in reality. - Seneca",
@@ -847,6 +887,30 @@
                 }
             });
         }
+
+        // Kinetic sequence: Automatically unpack the archive on load
+        window.addEventListener('DOMContentLoaded', () => {
+            // Wait for the sleek-fade-in animation to complete (1.5 seconds)
+            setTimeout(() => {
+                const folders = document.querySelectorAll('.folder-section');
+                folders.forEach((folder, index) => {
+                    setTimeout(() => {
+                        // Locate the title span to inject the localized shock glitch
+                        const labelSpan = folder.querySelector('button > span');
+                        if(labelSpan) {
+                            labelSpan.classList.add('glitch-shock');
+                            // Clear the shock class after it resolves to prevent lingering states
+                            setTimeout(() => {
+                                labelSpan.classList.remove('glitch-shock');
+                            }, 800);
+                        }
+                        // Unseal the archive folder
+                        folder.classList.remove('is-collapsed');
+                    }, index * 400); // 400ms cascading stagger (restored speed)
+                });
+            }, 1500); 
+        });
+
     </script>
 </body>
 </html>
