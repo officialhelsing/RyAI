@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RyAI™ // Archive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- JetBrains for the Techno, Inter for the extreme clean readability -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        techno: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000000;
+            color: #e5e5e5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Mastered arcane transitions - Sleek and Clean */
+        .grimoire-card {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #000000;
+        }
+        
+        .grimoire-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Cleaned up Text Effect */
+        .jester-glow {
+            transition: text-shadow 0.4s ease, color 0.4s ease;
+        }
+
+        /* Active Lightning Glitch Charge */
+        .lightning-charge {
+            color: #ffffff;
+            display: inline-block;
+            position: relative;
+            animation: storm-flicker 5s infinite;
+        }
+
+        @keyframes storm-flicker {
+            0%, 9%, 11%, 19%, 21%, 54%, 56%, 100% {
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+                transform: translate(0, 0) skewX(0);
+            }
+            10% {
+                text-shadow: 
+                    -1px 0 0 rgba(220, 38, 38, 0.6), 
+                    1px 0 0 rgba(6, 182, 212, 0.6),
+                    0 0 5px rgba(255, 255, 255, 0.5);
+                transform: translate(-0.5px, 0.5px) skewX(-5deg);
+            }
+            20% {
+                text-shadow: 
+                    1px 0 0 rgba(220, 38, 38, 0.6), 
+                    -1px 0 0 rgba(6, 182, 212, 0.6),
+                    0 0 5px rgba(255, 255, 255, 0.4);
+                transform: translate(0.5px, -0.5px) skewX(5deg);
+            }
+            55% {
+                text-shadow: 
+                    0 0 8px rgba(255, 255, 255, 0.6),
+                    0 0 15px rgba(6, 182, 212, 0.4);
+                transform: scale(1.005);
+            }
+        }
+
+        /* Secondary System Glitches */
+        .glitch-minor {
+            display: inline-block;
+            animation: storm-flicker 6s infinite;
+            animation-delay: 1.2s;
+        }
+
+        .glitch-micro {
+            display: inline-block;
+            animation: storm-flicker 8s infinite;
+            animation-delay: 3.5s;
+        }
+
+        /* Clean Fade Out Sequence */
+        .system-fade-active #ui-container {
+            animation: sleek-fade-out 2.5s ease-in-out forwards;
+        }
+
+        @keyframes sleek-fade-out {
+            0% { 
+                opacity: 1; 
+            }
+            100% { 
+                opacity: 0; 
+            }
+        }
+
+        /* File List Toggle Styles */
+        .folder-toggle-icon {
+            display: inline-block;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: rotate(90deg); /* Open by default */
+            margin-right: 6px;
+        }
+        
+        .is-collapsed .folder-toggle-icon {
+            transform: rotate(0deg); /* Closed */
+        }
+
+        .folder-content {
+            display: grid;
+        }
+
+        .is-collapsed .folder-content {
+            display: none;
+        }
+
+        /* Sparse, Swirling Starfield Environment */
+        .starfield {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: 0;
+            pointer-events: none;
+            background-color: #000000;
+        }
+
+        .stars-1, .stars-2, .stars-3 {
+            position: absolute;
+            inset: 0;
+        }
+
+        .stars-1 {
+            background-image: 
+                radial-gradient(1.5px 1.5px at 150px 150px, white, transparent),
+                radial-gradient(1.5px 1.5px at 300px 400px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(2px 2px at 400px 50px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1px 1px at 500px 250px, rgba(255,255,255,0.6), transparent);
+            background-size: 600px 600px;
+            opacity: 0.15;
+            animation: swirl 180s infinite linear;
+            transform-origin: center center;
+        }
+
+        .stars-2 {
+            background-image: 
+                radial-gradient(1px 1px at 50px 300px, white, transparent),
+                radial-gradient(1.5px 1.5px at 250px 450px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 600px 150px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1.5px 1.5px at 700px 600px, rgba(255,255,255,0.6), transparent);
+            background-size: 800px 800px;
+            opacity: 0.2;
+            animation: swirl-reverse 240s infinite linear;
+            transform-origin: 40% 60%;
+        }
+
+        .stars-3 {
+            background-image: 
+                radial-gradient(0.5px 0.5px at 100px 100px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1px 1px at 600px 700px, rgba(255,255,255,0.9), transparent),
+                radial-gradient(0.5px 0.5px at 800px 200px, rgba(255,255,255,0.5), transparent),
+                radial-gradient(0.5px 0.5px at 300px 850px, rgba(255,255,255,0.7), transparent);
+            background-size: 1000px 1000px;
+            opacity: 0.25; 
+            animation: float-swirl 200s infinite ease-in-out;
+            transform-origin: 60% 40%;
+        }
+
+        @keyframes swirl {
+            0% { transform: rotate(0deg) translate(0, 0); }
+            50% { transform: rotate(180deg) translate(30px, 30px); }
+            100% { transform: rotate(360deg) translate(0, 0); }
+        }
+
+        @keyframes swirl-reverse {
+            0% { transform: rotate(360deg) translate(0, 0); }
+            50% { transform: rotate(180deg) translate(-30px, -30px); }
+            100% { transform: rotate(0deg) translate(0, 0); }
+        }
+
+        @keyframes float-swirl {
+            0% { transform: rotate(0deg) translate(0, 0) scale(1); }
+            33% { transform: rotate(120deg) translate(40px, -20px) scale(1.05); }
+            66% { transform: rotate(240deg) translate(-20px, 40px) scale(0.95); }
+            100% { transform: rotate(360deg) translate(0, 0) scale(1); }
+        }
+
+        /* Cosmic Dust / Particle Swirlies */
+        .cosmic-dust {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(1px 1px at 200px 300px, rgba(255,255,255,0.4), transparent),
+                radial-gradient(2px 2px at 400px 80px, rgba(150,200,255,0.3), transparent),
+                radial-gradient(1.5px 1.5px at 800px 600px, rgba(255,255,255,0.2), transparent),
+                radial-gradient(3px 3px at 500px 900px, rgba(200,150,255,0.15), transparent),
+                radial-gradient(1px 1px at 100px 800px, rgba(255,255,255,0.3), transparent);
+            background-size: 1200px 1200px;
+            opacity: 0.35;
+            filter: blur(1px);
+            animation: float-swirl 250s infinite ease-in-out reverse;
+            transform-origin: 30% 70%;
+        }
+
+        /* Distant Shooting Stars */
+        .meteor-shower {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .meteor {
+            position: absolute;
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.6), rgba(255,255,255,0));
+            opacity: 0;
+            transform: rotate(-45deg);
+            animation: meteor-fall infinite linear;
+        }
+
+        .meteor:nth-child(1) { top: 10%; left: 80%; animation-duration: 12s; animation-delay: 2s; }
+        .meteor:nth-child(2) { top: -10%; left: 50%; animation-duration: 15s; animation-delay: 7s; }
+        .meteor:nth-child(3) { top: 30%; left: 110%; animation-duration: 10s; animation-delay: 14s; }
+        .meteor:nth-child(4) { top: 60%; left: 90%; animation-duration: 18s; animation-delay: 22s; }
+        .meteor:nth-child(5) { top: 5%; left: 120%; animation-duration: 14s; animation-delay: 28s; }
+
+        @keyframes meteor-fall {
+            0% { transform: rotate(-45deg) translate(0, 0); opacity: 0; }
+            2% { opacity: 0.4; }
+            8% { transform: rotate(-45deg) translate(-800px, 0); opacity: 0; }
+            100% { transform: rotate(-45deg) translate(-800px, 0); opacity: 0; }
+        }
+
+        /* Sleek, Clean Fade In Sequence */
+        #ui-container {
+            opacity: 0;
+            animation: sleek-fade-in 1.5s ease-in-out forwards;
+        }
+
+        @keyframes sleek-fade-in {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col selection:bg-white selection:text-black relative bg-black overflow-x-hidden">
+
+    <!-- Drifting Distant Stars Background -->
+    <div class="starfield">
+        <div class="stars-1"></div>
+        <div class="stars-2"></div>
+        <div class="stars-3"></div>
+        <div class="cosmic-dust"></div>
+    </div>
+
+    <!-- Distant Shooting Stars -->
+    <div class="meteor-shower">
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+    </div>
+
+    <!-- Sand Dissolve Overlay (Hidden by Default) -->
+    <div id="shatter-overlay" class="fixed inset-0 bg-black z-[9999] opacity-0 pointer-events-none flex items-center justify-center px-8 transition-opacity duration-[1500ms]">
+        <!-- Single Line Guarantee -->
+        <div id="shatter-quote" class="font-sans text-center text-gray-200 text-[10px] sm:text-sm tracking-widest w-full max-w-5xl whitespace-nowrap overflow-hidden text-ellipsis opacity-0 transition-opacity duration-[2500ms]"></div>
+    </div>
+
+    <!-- Main Content - Constrained Centered Stack -->
+    <main id="ui-container" class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-8 lg:px-12 pt-48 sm:pt-64 pb-12 relative z-10 transition-all duration-700">
+        
+        <!-- Global Header -->
+        <header class="flex flex-col mb-16 ml-2 sm:ml-4 z-50">
+            <div class="flex flex-row items-center gap-3">
+                <button onclick="triggerSystemDissolve('quote')" class="font-sans font-bold tracking-[0.2em] text-base sm:text-lg text-white lightning-charge hover:text-gray-300 transition-colors duration-300 cursor-pointer outline-none leading-none" title="Read the Archives">
+                    RyAI™
+                </button>
+                <div class="flex flex-row items-center gap-2 pt-0.5">
+                    <button onclick="triggerSystemDissolve('word')" class="font-techno font-medium tracking-[0.3em] text-[10px] sm:text-xs text-[#666666] hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300 cursor-pointer outline-none leading-none" title="Word of the Day">
+                        //
+                    </button>
+                    <button onclick="toggleAllFolders()" class="font-techno font-medium tracking-[0.3em] text-[10px] sm:text-xs text-[#666666] hover:text-gray-300 transition-colors duration-300 uppercase cursor-pointer outline-none leading-none" title="Toggle All Archives">
+                        Archive
+                    </button>
+                </div>
+            </div>
+            <button onclick="generateFact()" class="group outline-none cursor-pointer flex items-center transition-all duration-300 mt-1.5 pl-0.5 text-left max-w-full" title="Generate Random Fact">
+                <span id="fact-display" class="font-techno text-[11px] sm:text-xs text-[#333333] group-hover:text-gray-400 tracking-normal transition-colors duration-300 leading-tight">Welcome to my mind, enjoy your stay.</span>
+            </button>
+        </header>
+
+        <!-- SECTION 01: MAR 29, 2026 -->
+        <section class="folder-section w-full mb-10 ml-12 is-collapsed" id="epoch-1">
+            <button class="w-full text-left pb-4 flex items-center cursor-pointer group outline-none" onclick="toggleFolder('epoch-1')">
+                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-[#888888] group-hover:text-gray-300 transition-colors duration-300">
+                    <span class="folder-toggle-icon">&gt;</span> MAR 29, 2026
+                </span>
+            </button>
+
+            <div class="folder-content flex flex-col gap-6 w-full">
+                
+                <!-- Plenum Coagula (Deep Orange Theme) -->
+                <a href="https://xantheosis.substack.com/p/manifesto-plenum-coagula" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-orange-600/40 hover:shadow-[0_0_15px_rgba(234,88,12,0.15)]">
+                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-orange-600/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-orange-600 group-hover:border-orange-600/40 transition-all duration-500">
+                                <!-- Drafting Pen Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                            </div>
+                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-orange-600 rounded border border-[#1a1a1a] group-hover:border-orange-600/30 group-hover:shadow-[0_0_8px_rgba(234,88,12,0.25)] transition-all duration-300">[ MANIFESTO ]</span>
+                        </div>
+                        
+                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-orange-500 group-hover:text-shadow-[0_0_15px_rgba(234,88,12,0.5)] jester-glow">Plenum Coagula</h3>
+                        
+                        <p class="font-sans text-justify text-[#888888] text-[11px] leading-[1.8]">
+                            A metaphysical framework and core manuscript positing that existence is a continuous, hyper-dense fluid. It categorically rejects null states, voids, and the concept of zero as ontological errors. The work redefines the universe as a fully saturated medium where reality is a complete and unbroken state.
+                        </p>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- SECTION 02: MAY 04, 2026 -->
+        <section class="folder-section w-full mb-10 ml-12 is-collapsed" id="epoch-2">
+            <button class="w-full text-left pb-4 flex items-center cursor-pointer group outline-none" onclick="toggleFolder('epoch-2')">
+                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-[#888888] group-hover:text-gray-300 transition-colors duration-300">
+                    <span class="folder-toggle-icon">&gt;</span> MAY 04, 2026
+                </span>
+            </button>
+
+            <div class="folder-content flex flex-col gap-6 w-full">
+
+                <!-- Grimoire Patrocinium (Purple Theme) -->
+                <a href="https://officialhelsing.github.io/Grimoire-Patrocinium/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-purple-500/40 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)]">
+                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-purple-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-purple-500 group-hover:border-purple-500/40 transition-all duration-500">
+                                <!-- Open Book/Manual Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                            </div>
+                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-purple-500 rounded border border-[#1a1a1a] group-hover:border-purple-500/30 group-hover:shadow-[0_0_8px_rgba(168,85,247,0.2)] transition-all duration-300">[ MANUAL ]</span>
+                        </div>
+                        
+                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-purple-400 group-hover:text-shadow-[0_0_15px_rgba(168,85,247,0.4)] jester-glow">Grimoire Patrocinium</h3>
+                        
+                        <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                            A comprehensive defense architecture and digital manual designed to counteract psychological, algorithmic, and systemic influence. Built upon an archival analysis of one hundred historical texts, it provides a structured cognitive framework to maintain intellectual sovereignty and absolute focus.
+                        </p>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- SECTION 03: JUN 01, 2026 -->
+        <section class="folder-section w-full mb-10 ml-12 is-collapsed" id="epoch-3">
+            <button class="w-full text-left pb-4 flex items-center cursor-pointer group outline-none" onclick="toggleFolder('epoch-3')">
+                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-[#888888] group-hover:text-gray-300 transition-colors duration-300">
+                    <span class="folder-toggle-icon">&gt;</span> JUN 01, 2026
+                </span>
+            </button>
+
+            <div class="folder-content flex flex-col gap-4 w-full">
+
+                <!-- The Anatomy of Positivity (Emerald Theme) -->
+                <a href="https://officialhelsing.github.io/The-Anatomy-of-Positivity/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-emerald-500/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-emerald-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-emerald-500 group-hover:border-emerald-500/40 transition-all duration-500">
+                                <!-- Radiant Sun/Frequency Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                            </div>
+                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-emerald-500 rounded border border-[#1a1a1a] group-hover:border-emerald-500/30 group-hover:shadow-[0_0_8px_rgba(16,185,129,0.25)] transition-all duration-300">[ SYNTHESIS ]</span>
+                        </div>
+                        
+                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-emerald-400 group-hover:text-shadow-[0_0_15px_rgba(16,185,129,0.5)] jester-glow">The Anatomy of Positivity</h3>
+                        
+                        <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                            A synthesis of over 500 philosophical and literary perspectives woven into a cohesive narrative. It recontextualizes anxiety as acoustic dissonance and frames positivity not as an external goal to be chased, but as an inherent, observable state achieved through active surrender to cosmic density.
+                        </p>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- SECTION 04: JUN 10, 2026 -->
+        <section class="folder-section w-full mb-10 ml-12 is-collapsed" id="epoch-4">
+            <button class="w-full text-left pb-4 flex items-center cursor-pointer group outline-none" onclick="toggleFolder('epoch-4')">
+                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-[#888888] group-hover:text-gray-300 transition-colors duration-300">
+                    <span class="folder-toggle-icon">&gt;</span> JUN 10, 2026
+                </span>
+            </button>
+
+            <div class="folder-content flex flex-col gap-6 w-full">
+
+                <!-- Ryan's Map-Territory Conjecture (Cyan Theme) -->
+                <a href="https://officialhelsing.github.io/Ryans-Map-Territory-Conjecture/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-cyan-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-cyan-500 group-hover:border-cyan-500/40 transition-all duration-500">
+                                <!-- Map Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+                            </div>
+                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-cyan-500 rounded border border-[#1a1a1a] group-hover:border-cyan-500/30 group-hover:shadow-[0_0_8px_rgba(6,182,212,0.2)] transition-all duration-300">[ CONJECTURE ]</span>
+                        </div>
+                        
+                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-cyan-400 group-hover:text-shadow-[0_0_15px_rgba(6,182,212,0.4)] jester-glow">Ryan's Map-Territory Conjecture</h3>
+                        
+                        <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                            An epistemological and ontological thesis positing a terminal structural limit to scientific representation. The conjecture asserts that any scientific model aiming for perfect isomorphism with objective reality inevitably ceases to function as a descriptive map. Upon achieving absolute parity in causal, spatial, and informational density, the model undergoes an unavoidable ontological collapse, becoming completely identical to the territory it seeks to represent. Consequently, a perfect and comprehensively complete science is proven to be logically impossible, permanently bounding the scientific method below an epistemic event horizon.
+                        </p>
+                    </div>
+                </a>
+
+                <!-- The Formal Defense (Subset) -->
+                <div class="relative ml-8 sm:ml-12 group/contingent w-[90%] sm:w-[85%]">
+                    <!-- Circuit Trace Connection Lines (Left Sided) -->
+                    <div class="absolute -left-5 sm:-left-7 top-1/2 w-5 sm:w-7 h-px bg-[#222] group-hover/contingent:bg-cyan-600/50 transition-colors duration-500"></div>
+                    <div class="absolute -left-5 sm:-left-7 -top-4 bottom-1/2 w-px bg-[#222] group-hover/contingent:bg-cyan-600/50 transition-colors duration-500"></div>
+                    
+                    <a href="https://officialhelsing.github.io/Formal-Defense-of-Ryans-Map-Territory-Conjecture/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-4 sm:p-5 relative overflow-hidden block w-full cursor-pointer hover:border-cyan-600/40 hover:shadow-[0_0_15px_rgba(8,145,178,0.15)] bg-black">
+                        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-cyan-600/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-cyan-600 group-hover:border-cyan-600/50 transition-all duration-500">
+                                <!-- Map Icon (Matching Conjecture) -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+                            </div>
+                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-cyan-600 rounded border border-[#1a1a1a] group-hover:border-cyan-600/40 group-hover:shadow-[0_0_8px_rgba(8,145,178,0.3)] transition-all duration-300">[ CONJECTURE ]</span>
+                        </div>
+                        
+                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-cyan-500 group-hover:text-shadow-[0_0_15px_rgba(8,145,178,0.5)] transition-all duration-400 jester-glow">The Formal Defense</h3>
+                            
+                            <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                                The rigorous logical structuring and technical documentation that supports the core conjecture. This defense systematically dismantles the skeptical trilemma, providing the necessary foundational proofs to validate continuous-state axioms and their direct implications for digital security.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 05: JUN 14, 2026 -->
+        <section class="folder-section w-full mb-10 ml-12 is-collapsed" id="epoch-5">
+            <button class="w-full text-left pb-4 flex items-center cursor-pointer group outline-none" onclick="toggleFolder('epoch-5')">
+                <span class="font-techno text-[10px] sm:text-xs tracking-widest uppercase text-[#888888] group-hover:text-gray-300 transition-colors duration-300">
+                    <span class="folder-toggle-icon">&gt;</span> JUN 14, 2026
+                </span>
+            </button>
+
+            <div class="folder-content flex flex-col gap-6 w-full">
+                
+                <!-- The Logical Incoherence of Recursive Temporal Causality (Yellow Theme) -->
+                <a href="https://officialhelsing.github.io/The-Logical-Incoherence-of-Recursive-Temporal-Causality/" target="_blank" class="grimoire-card group border border-[#1a1a1a] rounded-xl p-5 relative overflow-hidden block w-full cursor-pointer hover:border-yellow-500/40 hover:shadow-[0_0_15px_rgba(234,179,8,0.1)]">
+                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-yellow-500/5 blur-[80px] rounded-full pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-1.5 bg-black rounded-md border border-[#1a1a1a] text-yellow-500 group-hover:border-yellow-500/40 transition-all duration-500">
+                                <!-- Recursive/Loop Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
+                            </div>
+                            <span class="font-techno px-2 py-0.5 text-[8px] uppercase tracking-[0.2em] font-bold bg-black text-yellow-500 rounded border border-[#1a1a1a] group-hover:border-yellow-500/30 group-hover:shadow-[0_0_8px_rgba(234,179,8,0.2)] transition-all duration-300">[ ANALYSIS ]</span>
+                        </div>
+                        
+                        <h3 class="font-sans text-base font-semibold tracking-wide mb-3 text-gray-200 group-hover:text-yellow-400 group-hover:text-shadow-[0_0_15px_rgba(234,179,8,0.4)] jester-glow">The Logical Incoherence of Recursive Temporal Causality</h3>
+                        
+                        <p class="font-sans text-justify text-[11px] text-[#888888] leading-[1.8]">
+                            A formal argument demonstrating that Shane Carruth's Primer (2004) exhibits logical incoherence in its model of recursive temporal causality, despite its reputation for internal rigor. The central claim asserts that the film's mechanism of time travel produces a structure in which causal identity, temporal ordering, and explanatory grounding inevitably collapse under the recursive duplication of agents.
+                        </p>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Interaction Script -->
+    <script>
+        // Formatted with standard hyphens (no em dashes) to ensure clean single-line splitting
+        const wisdomLibrary = [
+            "The limits of my language mean the limits of my world. - Ludwig Wittgenstein",
+            "We suffer more often in imagination than in reality. - Seneca",
+            "There is no truth. There is only perception. - Gustave Flaubert",
+            "The only true wisdom is in knowing you know nothing. - Socrates",
+            "Any sufficiently advanced technology is indistinguishable from magic. - Arthur C. Clarke",
+            "He who has a why to live for can bear almost any how. - Friedrich Nietzsche",
+            "To understand the universe, you must first understand the void. - Unknown Techno-Mage",
+            "We build our computers the way we build our cities: over time, without a plan. - Ellen Ullman",
+            "Life can only be understood backwards; but it must be lived forwards. - Søren Kierkegaard",
+            "The ghost in the machine is the echo of our own voice. - Arthur Koestler",
+            "Knowledge is a weapon. I intend to be formidably armed. - Terry Pratchett",
+            "Information is the resolution of uncertainty. - Claude Shannon",
+            "You are not a drop in the ocean. You are the entire ocean in a drop. - Rumi",
+            "The universe is under no obligation to make sense to you. - Neil deGrasse Tyson",
+            "Reality is that which, when you stop believing in it, doesn't go away. - Philip K. Dick",
+            "Man is condemned to be free. - Jean-Paul Sartre",
+            "Where is the wisdom we have lost in knowledge? Where is the knowledge we have lost in information? - T.S. Eliot",
+            "Do not go gentle into that good night. - Dylan Thomas",
+            "I must not fear. Fear is the mind-killer. - Frank Herbert",
+            "The computer is the most remarkable tool that we've ever come up with. It's the equivalent of a bicycle for our minds. - Steve Jobs",
+            "Time is the substance from which I am made. - Jorge Luis Borges",
+            "Sometimes the questions are complicated and the answers are simple. - Dr. Seuss",
+            "Those who cannot remember the past are condemned to repeat it. - George Santayana",
+            "The most beautiful experience we can have is the mysterious. - Albert Einstein",
+            "Words are, in my not-so-humble opinion, our most inexhaustible source of magic. - J.K. Rowling",
+            "Hell is other people. - Jean-Paul Sartre",
+            "It is not the man who has too little, but the man who craves more, that is poor. - Seneca",
+            "We are like butterflies who flutter for a day and think it is forever. - Carl Sagan",
+            "Beware that, when fighting monsters, you yourself do not become a monster. - Friedrich Nietzsche",
+            "The map is not the territory. - Alfred Korzybski",
+            "What we know is a drop, what we don't know is an ocean. - Isaac Newton",
+            "To define is to limit. - Oscar Wilde",
+            "Out of timber so crooked as that from which man is made nothing entirely straight can be carved. - Immanuel Kant",
+            "Every act of creation is first an act of destruction. - Pablo Picasso",
+            "The soul becomes dyed with the color of its thoughts. - Marcus Aurelius",
+            "If you want to keep a secret, you must also hide it from yourself. - George Orwell",
+            "Silence is the sleep that nourishes wisdom. - Francis Bacon",
+            "If you gaze long enough into an abyss, the abyss will gaze back into you. - Friedrich Nietzsche",
+            "Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth. - Marcus Aurelius",
+            "No man ever steps in the same river twice, for it's not the same river and he's not the same man. - Heraclitus",
+            "It is the mark of an educated mind to be able to entertain a thought without accepting it. - Aristotle",
+            "Only those who will risk going too far can possibly find out how far one can go. - T.S. Eliot",
+            "The medium is the message. - Marshall McLuhan",
+            "Machines take me by surprise with great frequency. - Alan Turing",
+            "Let everything happen to you: beauty and terror. Just keep going. - Rainer Maria Rilke",
+            "Nothing is true, everything is permitted. - Hassan-i Sabbah",
+            "We are stuck with technology when what we really want is just stuff that works. - Douglas Adams",
+            "I dream of a world where the truth is what shapes people's politics, rather than politics shaping what people think is true. - Neil deGrasse Tyson",
+            "The true sign of intelligence is not knowledge but imagination. - Albert Einstein",
+            "Death is the sound of a closing door. - Unknown"
+        ];
+
+        const wordsLibrary = [
+            "Aether - The pure, glowing fluid that fills the upper regions of space.",
+            "Anomaly - A deviation from the common rule, type, arrangement, or form.",
+            "Apophenia - The tendency to perceive meaningful connections between unrelated things.",
+            "Arcane - Known or understood by very few; mysterious; secret; obscure.",
+            "Cacophony - A harsh, discordant mixture of sounds.",
+            "Catharsis - The process of releasing, and thereby providing relief from, strong or repressed emotions.",
+            "Chimera - A thing that is hoped or wished for but in fact is illusory or impossible to achieve.",
+            "Cipher - A secret or disguised way of writing; a code.",
+            "Crepuscular - Of, resembling, or relating to twilight.",
+            "Defenestration - The action of throwing someone or something out of a window.",
+            "Enigma - A person or thing that is mysterious, puzzling, or difficult to understand.",
+            "Entropy - A thermodynamic quantity representing the unavailability of a system's thermal energy.",
+            "Ephemeral - Lasting for a very short time.",
+            "Epistemology - The theory of knowledge, especially with regard to its methods, validity, and scope.",
+            "Esoteric - Intended for or likely to be understood by only a small number of people.",
+            "Euphony - The quality of being pleasing to the ear, especially through a harmonious combination of words.",
+            "Evanescent - Soon passing out of sight, memory, or existence; quickly fading or disappearing.",
+            "Fugacious - Tending to disappear; fleeting.",
+            "Gossamer - A fine, filmy substance consisting of cobwebs spun by small spiders.",
+            "Halcyon - Denoting a period of time in the past that was idyllically happy and peaceful.",
+            "Hegemony - Leadership or dominance, especially by one country or social group over others.",
+            "Ineffable - Too great or extreme to be expressed or described in words.",
+            "Labyrinthine - Like a labyrinth; irregular and twisting.",
+            "Liminal - Occupying a position at, or on both sides of, a boundary or threshold.",
+            "Mellifluous - (Of a voice or words) sweet or musical; pleasant to hear.",
+            "Monolith - A large single upright block of stone, especially one shaped into or serving as a pillar or monument.",
+            "Myopia - Lack of imagination, foresight, or intellectual insight.",
+            "Nadir - The lowest point in the fortunes of a person or organization.",
+            "Nexus - A connection or series of connections linking two or more things.",
+            "Obfuscate - Render obscure, unclear, or unintelligible.",
+            "Obsidian - A hard, dark, glasslike volcanic rock formed by the rapid solidification of lava.",
+            "Ontology - The branch of metaphysics dealing with the nature of being.",
+            "Panopticon - A circular prison with cells arranged around a central well, from which prisoners could at all times be observed.",
+            "Paradigm - A typical example or pattern of something; a model.",
+            "Paradox - A seemingly absurd or self-contradictory statement or proposition.",
+            "Pareidolia - The tendency to perceive a specific, often meaningful image in a random or ambiguous visual pattern.",
+            "Petrichor - A pleasant smell that frequently accompanies the first rain after a long period of warm, dry weather.",
+            "Quixotic - Exceedingly idealistic; unrealistic and impractical.",
+            "Serendipity - The occurrence and development of events by chance in a happy or beneficial way.",
+            "Simulacrum - An image or representation of someone or something.",
+            "Singularity - The state, fact, quality, or condition of being singular.",
+            "Solipsism - The view or theory that the self is all that can be known to exist.",
+            "Somnambulist - A person who sleepwalks.",
+            "Susurrus - Whispering, murmuring, or rustling.",
+            "Sycophant - A person who acts obsequiously toward someone important in order to gain advantage.",
+            "Tenebrous - Dark, shadowy, or obscure.",
+            "Vestige - A trace of something that is disappearing or no longer exists.",
+            "Zenith - The time at which something is most powerful or successful.",
+            "Zephyr - A soft gentle breeze.",
+            "Ziggurat - A rectangular stepped tower, sometimes surmounted by a temple."
+        ];
+
+        const factsLibrary = [
+            "Honey never spoils.",
+            "Octopuses have three hearts.",
+            "Venus is the only planet to spin clockwise.",
+            "Bananas are berries, but strawberries are not.",
+            "A day on Venus is longer than a year on Venus.",
+            "Water can boil and freeze at the same time.",
+            "The Eiffel Tower can be 15 cm taller during the summer.",
+            "A jiffy is an actual unit of time measuring 1/100th of a second.",
+            "The hashtag symbol is technically called an octothorpe.",
+            "A single cloud can weigh more than a million pounds.",
+            "Wombat poop is cube shaped.",
+            "Cows have best friends and get stressed when separated.",
+            "The smell of freshly cut grass is actually a plant distress call.",
+            "Peanuts are not nuts, they are legumes.",
+            "The unicorn is the national animal of Scotland.",
+            "A chef's hat has exactly 100 pleats.",
+            "Sloths can hold their breath longer than dolphins.",
+            "There are more fake flamingos in the world than real ones.",
+            "The longest English word without a vowel is rhythms.",
+            "Apples float in water because they are 25 percent air.",
+            "The heart of a shrimp is located in its head.",
+            "Snails can sleep for three years.",
+            "Elephants are the only animal that cannot jump.",
+            "A rhinoceros horn is made of compacted hair.",
+            "It takes a sloth two weeks to digest its food.",
+            "Koala fingerprints are nearly identical to human fingerprints.",
+            "Frogs cannot swallow without blinking.",
+            "Jupiter's red spot is shrinking.",
+            "Blood donors in Sweden receive a text when their blood is used.",
+            "The dot over the lower case i and j has a name: a tittle.",
+            "A flock of crows is known as a murder.",
+            "Human teeth are the only body part that cannot heal themselves.",
+            "Space smells like seared steak.",
+            "The shortest war in history lasted 38 minutes.",
+            "Butterflies taste with their feet.",
+            "A flea can accelerate faster than the Space Shuttle.",
+            "A group of ferrets is called a business.",
+            "Polar bears have black skin.",
+            "The majority of your brain is fat.",
+            "A blue whale's tongue weighs as much as an elephant.",
+            "The moon has moonquakes.",
+            "Human bones are stronger than concrete.",
+            "Water makes up about 71 percent of the Earth's surface.",
+            "There are more stars in the universe than grains of sand on Earth.",
+            "Pineapples take about two years to grow.",
+            "The plastic things on the end of shoelaces are called aglets.",
+            "Sharks existed before trees.",
+            "Humans are the only animals that blush.",
+            "A crocodile cannot stick its tongue out.",
+            "Rabbits cannot puke.",
+            "An ostrich's eye is bigger than its brain.",
+            "Pigs cannot look up into the sky.",
+            "The lint in the bottom of your pocket has a name: gnurr.",
+            "A bolt of lightning contains enough energy to toast 100,000 slices of bread.",
+            "Cats cannot taste sweetness.",
+            "The first oranges were not orange.",
+            "Scotland has 421 words for snow.",
+            "Peanuts are an ingredient in dynamite.",
+            "Armadillo shells are bulletproof.",
+            "The longest hiccuping bout lasted 68 years.",
+            "Pigeons can do math.",
+            "Tigers have striped skin, not just striped fur.",
+            "A sneeze travels at about 100 miles per hour.",
+            "You cannot hum while holding your nose.",
+            "Sea otters hold hands while they sleep so they don't drift apart.",
+            "A group of flamingos is called a flamboyance.",
+            "A piece of paper can be folded no more than seven times.",
+            "The first computer mouse was made of wood.",
+            "The Apollo 11 computers had less processing power than a modern cell phone.",
+            "A day on Mars is 24 hours and 39 minutes long.",
+            "The inventor of the Pringles can is buried in one.",
+            "A cat has 32 muscles in each ear.",
+            "The Spanish national anthem has no words.",
+            "A duel between three people is actually called a truel.",
+            "A herd of unicorns is called a blessing.",
+            "Humans share 50 percent of their DNA with bananas.",
+            "The first alarm clock could only ring at 4 AM.",
+            "Oxford University is older than the Aztec Empire.",
+            "Nintendo was founded in 1889.",
+            "There is a species of jellyfish that is biologically immortal.",
+            "The word 'nerd' was first coined by Dr. Seuss.",
+            "If you open your eyes in a pitch-black room, the color you see is called eigengrau.",
+            "A leap year has 366 days.",
+            "Bees can recognize human faces.",
+            "Ants never sleep.",
+            "Some metals are so reactive that they explode on contact with water.",
+            "The human body contains enough carbon to provide 'lead' for about 9,000 pencils.",
+            "Hawaii moves 7.5cm closer to Alaska every year.",
+            "A rainbow in the night is called a moonbow.",
+            "The Eiffel Tower shrinks by 6 inches in the winter.",
+            "A snail breathes through a hole near its neck.",
+            "There are 293 ways to make change for a dollar.",
+            "A dragonfly has a lifespan of only 24 hours.",
+            "Sloths are excellent swimmers.",
+            "The largest desert in the world is Antarctica.",
+            "A flamingo can only eat when its head is upside down.",
+            "A quarter of all your bones are in your feet.",
+            "The longest recorded flight of a chicken is 13 seconds.",
+            "The heart of a giraffe weighs about 25 pounds.",
+            "A chameleon's tongue is twice the length of its body.",
+            "The average person spends six months of their life waiting for red lights to turn green.",
+            "The oldest 'your mom' joke was discovered on a 3,500-year-old Babylonian tablet.",
+            "Squirrels plant thousands of new trees each year by forgetting where they hid their acorns.",
+            "The world's smallest reptile was discovered in 2021 and fits on a fingertip.",
+            "The entire world's population could fit inside Los Angeles.",
+            "There are more trees on Earth than stars in the Milky Way.",
+            "Cotton candy was invented by a dentist.",
+            "The longest musical performance in history is currently taking place and will end in 2640.",
+            "A day on Pluto lasts for 153 hours.",
+            "The smell of rain is caused by a bacteria called actinomycetes.",
+            "The human brain can generate enough electricity to power a small light bulb.",
+            "Tears look different under a microscope depending on why you are crying.",
+            "The deepest part of the ocean is the Mariana Trench.",
+            "A group of owls is called a parliament.",
+            "The shortest commercial flight in the world lasts just 57 seconds.",
+            "A honey bee has five eyes.",
+            "The Great Wall of China is not visible from space with the naked eye.",
+            "The word 'alphabet' comes from the first two letters of the Greek alphabet: alpha and beta.",
+            "The national animal of Canada is the beaver.",
+            "The longest word in the dictionary has 45 letters.",
+            "The first person to walk on the moon was Neil Armstrong.",
+            "The first animal to orbit the Earth was a dog named Laika.",
+            "The tallest mountain in the solar system is Olympus Mons on Mars.",
+            "The smallest bone in the human body is the stapes in the ear.",
+            "The largest organ in the human body is the skin.",
+            "The loudest animal on Earth is the sperm whale.",
+            "The fastest land animal is the cheetah.",
+            "The most venomous snake in the world is the inland taipan.",
+            "The deadliest animal in the world is the mosquito.",
+            "The longest river in the world is the Nile.",
+            "The largest ocean in the world is the Pacific.",
+            "The most spoken language in the world is Mandarin Chinese.",
+            "The largest country in the world by area is Russia.",
+            "The most populated country in the world is India."
+        ];
+
+        let isShattering = false;
+
+        function generateFact() {
+            const factEl = document.getElementById('fact-display');
+            const randomFact = factsLibrary[Math.floor(Math.random() * factsLibrary.length)];
+            factEl.innerText = randomFact;
+        }
+
+        function triggerSystemDissolve(type) {
+            if (isShattering) return;
+            isShattering = true;
+            
+            const body = document.body;
+            const overlay = document.getElementById('shatter-overlay');
+            const quoteEl = document.getElementById('shatter-quote');
+            
+            let contentHTML = "";
+
+            if (type === 'quote') {
+                const randomQuote = wisdomLibrary[Math.floor(Math.random() * wisdomLibrary.length)];
+                const parts = randomQuote.split(" - ");
+                const textPart = parts[0];
+                const authorPart = parts[1] || "Unknown";
+                // Enforced single line rendering
+                contentHTML = `<span class="text-gray-200">${textPart}</span> <span class="text-[#888888] font-techno text-xs sm:text-sm ml-2">- ${authorPart}</span>`;
+            } else {
+                const randomWord = wordsLibrary[Math.floor(Math.random() * wordsLibrary.length)];
+                const parts = randomWord.split(" - ");
+                const wordPart = parts[0];
+                const defPart = parts[1] || "";
+                // Enforced single line rendering
+                contentHTML = `<span class="text-gray-200 font-techno uppercase tracking-[0.3em]">${wordPart}</span> <span class="text-gray-500 font-sans ml-3">// ${defPart}</span>`;
+            }
+
+            quoteEl.innerHTML = contentHTML;
+
+            // 1. Trigger the smooth fade out animation on the UI container
+            body.classList.add('system-fade-active');
+            
+            // 2. Bring in the absolute black void slowly to swallow the screen
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100', 'pointer-events-auto');
+            }, 800); 
+
+            // 3. Fade in the single-line text from the dark
+            setTimeout(() => {
+                quoteEl.classList.remove('opacity-0');
+                quoteEl.classList.add('opacity-100');
+            }, 2500);
+
+            // 4. Fade out the text back to nothingness
+            setTimeout(() => {
+                quoteEl.classList.remove('opacity-100');
+                quoteEl.classList.add('opacity-0');
+            }, 7500); 
+
+            // 5. System Reset: Remove overlay and restore UI to normal
+            setTimeout(() => {
+                overlay.classList.remove('opacity-100', 'pointer-events-auto');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                body.classList.remove('system-fade-active');
+                isShattering = false;
+            }, 9500); 
+        }
+
+        function toggleFolder(folderId) {
+            const folder = document.getElementById(folderId);
+            folder.classList.toggle('is-collapsed');
+        }
+
+        function toggleAllFolders() {
+            const folders = document.querySelectorAll('.folder-section');
+            let anyOpen = false;
+            
+            folders.forEach(f => {
+                if (!f.classList.contains('is-collapsed')) {
+                    anyOpen = true;
+                }
+            });
+
+            folders.forEach(f => {
+                if (anyOpen) {
+                    f.classList.add('is-collapsed');
+                } else {
+                    f.classList.remove('is-collapsed');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
